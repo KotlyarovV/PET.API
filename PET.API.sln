@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PET.Infrastructure", "PET.I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PET.API", "PET.API\PET.API.csproj", "{958C188A-C449-413D-88FF-511B5C98651A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorage", "FileStorage\FileStorage.csproj", "{8A32303E-F15E-41FF-9B5C-DDA9B6A5BB52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{958C188A-C449-413D-88FF-511B5C98651A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{958C188A-C449-413D-88FF-511B5C98651A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{958C188A-C449-413D-88FF-511B5C98651A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A32303E-F15E-41FF-9B5C-DDA9B6A5BB52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A32303E-F15E-41FF-9B5C-DDA9B6A5BB52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A32303E-F15E-41FF-9B5C-DDA9B6A5BB52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A32303E-F15E-41FF-9B5C-DDA9B6A5BB52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

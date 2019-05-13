@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,6 +12,15 @@ using PET.Domain.Specifications;
 
 namespace PET.Application.Services
 {
+    public interface IFileStorageService
+    {
+        Task Save(MemoryStream memoryStream, string wayToFile);
+
+        Task Load(MemoryStream memoryStream, string wayToFile);
+
+        Task Delete(string wayToFile);
+    }
+
     public interface IDataService<T>
     {
         Task<T> AddAsync(T entity);
@@ -26,12 +36,18 @@ namespace PET.Application.Services
     {
         private readonly IDataService<Animal> animalDataService;
         private readonly IAnimalDtoBuilder animalDtoBuilder;
+        private readonly IAnimalBuilder animalBuilder;
+        private readonly IFileStorageService fileStorageService;
 
         public AnimalAppService(IDataService<Animal> animalDataService,
-            IAnimalDtoBuilder animalDtoBuilder)
+            IAnimalDtoBuilder animalDtoBuilder,
+            IAnimalBuilder animalBuilder,
+            IFileStorageService fileStorageService)
         {
             this.animalDataService = animalDataService;
             this.animalDtoBuilder = animalDtoBuilder;
+            this.animalBuilder = animalBuilder;
+            this.fileStorageService = fileStorageService;
         }
 
         public async Task<IEnumerable<AnimalDto>> GetAll()
@@ -50,6 +66,11 @@ namespace PET.Application.Services
             var animal = await animalDataService.GetAsync(new AnimalIdSpecification(id));
             var animalDto = animalDtoBuilder.Build(animal);
             return animalDto;
+        }
+
+        public async Task<Guid> Create(AnimalSaveDto animalSaveDto)
+        {
+            var f
         }
     }
 }

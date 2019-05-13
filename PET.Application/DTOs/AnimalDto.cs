@@ -10,6 +10,21 @@ namespace PET.Application.DTOs
         Female
     }
 
+    public class AnimalSaveDto
+    {
+        public string Description { get; set; }
+
+        public string Name { get; set; }
+
+        public DateTime BDate { get; set; }
+
+        public string AnimalType { get; set; }
+
+        public SexM Sex { get; set; }
+
+        public IEnumerable<string> ImagesInBase64 { get; set; }
+    }
+
     public class AnimalDto
     {
         public Guid Id { get; set; }
