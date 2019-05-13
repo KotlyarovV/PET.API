@@ -60,6 +60,10 @@ namespace PET.API
                 })
                 .AddScoped<IAnimalDtoBuilder, AnimalDtoBuilder>()
                 .AddScoped<IDataService<Animal>, AnimalDataService>()
+                .AddScoped<IFileStorageService, FileStorage.FileStorage>()
+                .AddScoped<IAnimalBuilder, AnimalBuilder>()
+                .AddScoped<IFileBuilder, FileBuilder>()
+                .AddScoped<FileAppService>()
                 .AddScoped<AnimalAppService>();
         }
 

@@ -8,6 +8,29 @@ using PET.Application.Services;
 
 namespace PET.API.Controllers
 {
+
+    [Route("files")]
+    public class FileController : Controller
+    {
+        private readonly FileAppService fileAppService;
+
+        public FileController(FileAppService fileAppService)
+        {
+            this.fileAppService = fileAppService;
+        }
+
+        [HttpGet]
+        [Route("{fileName}")]
+        public async Task<IActionResult> Get(string fileName)
+        {
+            var memoryStream = await fileAppService.Get(fileName);
+            return new FileContentResult(memoryStream.ToArray(), "application/octet-stream")
+            {
+                FileDownloadName = fileName
+            };
+        }
+    }
+
     [Route("animal")]
     public class AnimalController : Controller
     {
@@ -30,6 +53,20 @@ namespace PET.API.Controllers
         public async Task<AnimalDto> Get(Guid id)
         {
             return await animalAppService.Get(id);
+        }
+
+        [HttpPost]
+        [Route("")]
+        public async Task<Guid> Create([FromBody] AnimalSaveDto animalSaveDto)
+        {
+            return await animalAppService.Create(animalSaveDto);
+        }
+
+        [HttpDelete]
+        [Route("id")]
+        public async Task Delete(Guid id)
+        {
+            await animalAppService.Delete(id);
         }
     }
 }

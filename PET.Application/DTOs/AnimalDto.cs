@@ -10,6 +10,13 @@ namespace PET.Application.DTOs
         Female
     }
 
+    public class FileSaveDto
+    {
+        public string FileInBase64 { get; set; }
+
+        public string Extension { get; set; }
+    }
+
     public class AnimalSaveDto
     {
         public string Description { get; set; }
@@ -22,7 +29,7 @@ namespace PET.Application.DTOs
 
         public SexM Sex { get; set; }
 
-        public IEnumerable<string> ImagesInBase64 { get; set; }
+        public IEnumerable<FileSaveDto> Files { get; set; }
     }
 
     public class AnimalDto

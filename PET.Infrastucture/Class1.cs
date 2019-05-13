@@ -46,7 +46,7 @@ namespace PET.Infrastructure
             await context.SaveChangesAsync();
         }
 
-        public async Task Remove(TEntity item)
+        public async Task RemoveAsync(TEntity item)
         {
             dbSet.Remove(item);
             await context.SaveChangesAsync();
@@ -79,7 +79,7 @@ namespace PET.Infrastructure
 
         Task<IEnumerable<TEntity>> GetAllAsync(ISpecification<TEntity> specification);
 
-        Task Remove(TEntity item);
+        Task RemoveAsync(TEntity item);
 
         Task Update(TEntity item);
     }

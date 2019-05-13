@@ -8,9 +8,26 @@ using PET.Domain.Models;
 
 namespace PET.Application.Builders
 {
+    public interface IFileBuilder
+    {
+        File Build(FileSaveDto fileSaveDto);
+    }
+
+    public class FileBuilder : IFileBuilder
+    {
+        public File Build(FileSaveDto fileSaveDto)
+        {
+            return new File
+            {
+                Id = Guid.NewGuid(),
+                WayToFile = $"{Guid.NewGuid()}{Guid.NewGuid()}.{fileSaveDto.Extension}"
+            };
+        }
+    }
+
     public class AnimalBuilder : IAnimalBuilder
     {
-        public Animal Build(AnimalSaveDto animal, IEnumerable<string> waysToFile)
+        public Animal Build(AnimalSaveDto animal, IEnumerable<File> files)
         {
             return new Animal
             {
@@ -20,14 +37,14 @@ namespace PET.Application.Builders
                 Description = animal.Description,
                 Name = animal.Name,
                 Sex = (Sex) animal.Sex,
-                Files = waysToFile.Select(w => new File{Id = Guid.NewGuid(), WayToFile = w}).ToArray()
+                Files = files.ToArray()
             };
         }
     }
 
     public interface IAnimalBuilder
     {
-        Animal Build(AnimalSaveDto animal, IEnumerable<string> waysToFile);
+        Animal Build(AnimalSaveDto animal, IEnumerable<File> files);
     }
 
     public interface IAnimalDtoBuilder
