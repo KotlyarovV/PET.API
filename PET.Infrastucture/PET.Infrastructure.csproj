@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PET.Application\PET.Application.csproj" />
+    <ProjectReference Include="..\PET.Ef\PET.Ef.csproj" />
+  </ItemGroup>
+
+</Project>
