@@ -40,11 +40,26 @@ namespace PET.Application.Builders
                 Files = files.ToArray()
             };
         }
+
+        public Animal Build(Guid id, AnimalUpdateDto animal, IEnumerable<File> files)
+        {
+            return new Animal
+            {
+                Id = id,
+                AnimalType = animal.AnimalType,
+                BDate = animal.BDate,
+                Description = animal.Description,
+                Name = animal.Name,
+                Sex = (Sex)animal.Sex,
+                Files = files.ToArray()
+            };
+        }
     }
 
     public interface IAnimalBuilder
     {
         Animal Build(AnimalSaveDto animal, IEnumerable<File> files);
+        Animal Build(Guid id, AnimalUpdateDto animal, IEnumerable<File> files);
     }
 
     public interface IAnimalDtoBuilder

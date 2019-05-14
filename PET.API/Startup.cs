@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -42,6 +43,9 @@ namespace PET.API
                 .AddDbContext<AnimalDbContext>(
                     options => options
                         .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")))
+                .AddDbContext<UserDbContext>(
+                    options => options
+                        .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")))
                 .AddMvc()
                 .AddJsonOptions(options =>
                 {
@@ -59,12 +63,22 @@ namespace PET.API
                     });
                 })
                 .AddScoped<IAnimalDtoBuilder, AnimalDtoBuilder>()
+                .AddScoped<IDataService<User>, UserDataService>()
                 .AddScoped<IDataService<Animal>, AnimalDataService>()
                 .AddScoped<IFileStorageService, FileStorage.FileStorage>()
                 .AddScoped<IAnimalBuilder, AnimalBuilder>()
                 .AddScoped<IFileBuilder, FileBuilder>()
+                .AddScoped<IUserDtoBuilder, UserDtoBuilder>()
+                .AddScoped<IUserBuilder, UserBuilder>()
                 .AddScoped<FileAppService>()
-                .AddScoped<AnimalAppService>();
+                .AddScoped<AnimalAppService>()
+                .AddScoped<UserAppService>();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = new PathString("/account");
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,6 +95,7 @@ namespace PET.API
                     .AllowAnyMethod()
                     .AllowAnyHeader())
                 .UseSwagger()
+                .UseAuthentication()
                 .UseSwaggerUI(swaggerUiOptions => swaggerUiOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Payment registration API"))
                 .UseMvc(routes =>
                 {

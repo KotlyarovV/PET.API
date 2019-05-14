@@ -32,6 +32,21 @@ namespace PET.Application.DTOs
         public IEnumerable<FileSaveDto> Files { get; set; }
     }
 
+    public class AnimalUpdateDto
+    {
+        public string Description { get; set; }
+
+        public string Name { get; set; }
+
+        public DateTime BDate { get; set; }
+
+        public string AnimalType { get; set; }
+
+        public SexM Sex { get; set; }
+
+        public IEnumerable<FileSaveDto> Files { get; set; }
+    }
+
     public class AnimalDto
     {
         public Guid Id { get; set; }
