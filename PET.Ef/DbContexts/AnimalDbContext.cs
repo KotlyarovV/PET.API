@@ -6,7 +6,7 @@ namespace PET.Ef.DbContexts
 {
     public class AnimalDbContext : DbContext
     {
-        public AnimalDbContext(DbContextOptions options)
+        public AnimalDbContext(DbContextOptions<AnimalDbContext> options)
             : base(options)
         {
 

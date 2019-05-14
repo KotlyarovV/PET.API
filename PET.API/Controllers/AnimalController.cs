@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PET.Application.DTOs;
 using PET.Application.Services;
@@ -57,6 +58,7 @@ namespace PET.API.Controllers
 
         [HttpPost]
         [Route("")]
+        [Authorize]
         public async Task<Guid> Create([FromBody] AnimalSaveDto animalSaveDto)
         {
             return await animalAppService.Create(animalSaveDto);
@@ -64,13 +66,15 @@ namespace PET.API.Controllers
 
         [HttpPost]
         [Route("{id}")]
+        [Authorize]
         public async Task Update(Guid id, [FromBody] AnimalUpdateDto animalUpdateDto)
         {
             await animalAppService.Update(id, animalUpdateDto);
         }
 
         [HttpDelete]
-        [Route("id")]
+        [Route("{id}")]
+        [Authorize]
         public async Task Delete(Guid id)
         {
             await animalAppService.Delete(id);

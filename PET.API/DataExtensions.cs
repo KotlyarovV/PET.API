@@ -17,19 +17,22 @@ namespace PET.API
         {
             using (var scope = host.Services.CreateScope())
             {
-                var petsRepository = scope.ServiceProvider.GetRequiredService<IDataService<Animal>>();
-                petsRepository.SeedWithSampleAnimals();
+                var petsDataService = scope.ServiceProvider.GetRequiredService<IDataService<Animal>>();
+                petsDataService.SeedWithSampleAnimals();
+
+                var usersDataService = scope.ServiceProvider.GetRequiredService<IDataService<User>>();
+                usersDataService.SeedWithSampleUsers();
             }
         }
 
-        private static void SeedWithSampleAnimals(this IDataService<Animal> repository)
+        private static void SeedWithSampleAnimals(this IDataService<Animal> dataService)
         {
-            var animalsFromRepo = repository.GetAllAsync()
+            var animalsFromRepo = dataService.GetAllAsync()
                 .Result;
 
             foreach (var animal in animalsFromRepo)
             {
-                repository.RemoveAsync(animal)
+                dataService.RemoveAsync(animal)
                     .Wait();
             }
 
@@ -68,8 +71,31 @@ namespace PET.API
 
             foreach (var animal in animals)
             {
-                repository.AddAsync(animal).Wait();
+                dataService.AddAsync(animal)
+                    .Wait();
             }
+        }
+
+        private static void SeedWithSampleUsers(this IDataService<User> dataService)
+        {
+            var users = dataService.GetAllAsync()
+                .Result;
+
+            foreach (var user in users)
+            {
+                dataService.RemoveAsync(user)
+                    .Wait();
+            }
+
+            var admin = new User
+            {
+                Id = Guid.NewGuid(),
+                Email = "admin",
+                Password = "123"
+            };
+
+            dataService.AddAsync(admin)
+                .Wait();
         }
     }
 }
