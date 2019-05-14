@@ -62,6 +62,13 @@ namespace PET.API.Controllers
             return await animalAppService.Create(animalSaveDto);
         }
 
+        [HttpPost]
+        [Route("{id}")]
+        public async Task Update(Guid id, [FromBody] AnimalUpdateDto animalUpdateDto)
+        {
+            await animalAppService.Update(id, animalUpdateDto);
+        }
+
         [HttpDelete]
         [Route("id")]
         public async Task Delete(Guid id)

@@ -105,6 +105,22 @@ namespace PET.Application.Services
             return animal.Id;
         }
 
+        public async Task Update(Guid id, AnimalUpdateDto animalUpdateDto)
+        {
+
+            var files = animalUpdateDto.Files
+                .Select(f => new { FileDTO = f, File = fileBuilder.Build(f) })
+                .ToArray();
+
+            await Task.WhenAll(files.Select(f => fileStorageService.Save(
+                new MemoryStream(Convert.FromBase64String(f.FileDTO.FileInBase64)),
+                f.File.WayToFile)));
+
+            var animal = animalBuilder.Build(id, animalUpdateDto, files.Select(f => f.File).ToArray());
+            await animalDataService.Update(animal);
+
+        }
+
         public async Task Delete(Guid id)
         {
             var animal = await animalDataService.GetAsync(new AnimalIdSpecification(id));
