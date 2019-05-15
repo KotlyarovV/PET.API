@@ -2,55 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using PET.Application.Builders;
 using PET.Application.DTOs;
-using PET.Domain;
 using PET.Domain.Models;
 using PET.Domain.Specifications;
 
 namespace PET.Application.Services
 {
-    public interface IFileStorageService
-    {
-        Task Save(MemoryStream memoryStream, string wayToFile);
-
-        Task Load(MemoryStream memoryStream, string wayToFile);
-
-        Task Delete(string wayToFile);
-    }
-
-    public interface IDataService<T>
-    {
-        Task<T> AddAsync(T entity);
-
-        Task RemoveAsync(T entity);
-
-        Task<IEnumerable<T>> GetAllAsync();
-
-        Task<T> GetAsync(ISpecification<T> spec);
-
-        Task Update(T entity);
-    }
-
-    public class FileAppService
-    {
-        private readonly IFileStorageService fileStorageService;
-
-        public FileAppService(IFileStorageService fileStorageService)
-        {
-            this.fileStorageService = fileStorageService;
-        }
-
-        public async Task<MemoryStream> Get(string file)
-        {
-            var memoryStream = new MemoryStream();
-            await fileStorageService.Load(memoryStream, file);
-            return memoryStream;
-        }
-    }
-
     public class AnimalAppService
     {
         private readonly IDataService<Animal> animalDataService;
