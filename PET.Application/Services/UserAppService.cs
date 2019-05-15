@@ -13,7 +13,9 @@ namespace PET.Application.Services
         private readonly IUserDtoBuilder userDtoBuilder;
         private readonly IUserBuilder userBuilder;
 
-        public UserAppService(IDataService<User> userDataService, IUserDtoBuilder userDtoBuilder, IUserBuilder userBuilder)
+        public UserAppService(IDataService<User> userDataService, 
+            IUserDtoBuilder userDtoBuilder, 
+            IUserBuilder userBuilder)
         {
             this.userDataService = userDataService;
             this.userDtoBuilder = userDtoBuilder;
