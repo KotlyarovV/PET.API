@@ -12,6 +12,8 @@ namespace PET.Application.Services
 
         Task<IEnumerable<T>> GetAllAsync();
 
+        Task<IEnumerable<T>> GetAllAsync(ISpecification<T> spec);
+
         Task<T> GetAsync(ISpecification<T> spec);
 
         Task Update(T entity);

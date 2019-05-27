@@ -27,6 +27,13 @@ namespace PET.API.Controllers
         }
 
         [HttpGet]
+        [Route("filtered")]
+        public async Task<IEnumerable<AnimalDto>> GetFiltered(AnimalSpecDto animalSpecDto)
+        {
+            return await animalAppService.Get(animalSpecDto);
+        }
+
+        [HttpGet]
         [Route("{id}")]
         public async Task<AnimalDto> Get(Guid id)
         {
