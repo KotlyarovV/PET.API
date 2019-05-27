@@ -9,6 +9,14 @@ namespace PET.Application.DTOs
 
         public string Name { get; set; }
 
+        public string Kind { get; set; }
+
+        public bool Sterilization { get; set; }
+
+        public bool Vaccination { get; set; }
+
+        public bool Passport { get; set; }
+
         public DateTime BDate { get; set; }
 
         public string AnimalType { get; set; }
