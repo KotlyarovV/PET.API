@@ -17,18 +17,21 @@ namespace PET.Application.Services
         private readonly IAnimalBuilder animalBuilder;
         private readonly IFileStorageService fileStorageService;
         private readonly IFileBuilder fileBuilder;
+        private readonly IAnimalSpecificationBuilder animalSpecificationBuilder;
 
         public AnimalAppService(IDataService<Animal> animalDataService,
             IAnimalDtoBuilder animalDtoBuilder,
             IAnimalBuilder animalBuilder,
             IFileStorageService fileStorageService,
-            IFileBuilder fileBuilder)
+            IFileBuilder fileBuilder,
+            IAnimalSpecificationBuilder animalSpecificationBuilder)
         {
             this.animalDataService = animalDataService;
             this.animalDtoBuilder = animalDtoBuilder;
             this.animalBuilder = animalBuilder;
             this.fileStorageService = fileStorageService;
             this.fileBuilder = fileBuilder;
+            this.animalSpecificationBuilder = animalSpecificationBuilder;
         }
 
         public async Task<IEnumerable<AnimalDto>> GetAll()
@@ -44,9 +47,17 @@ namespace PET.Application.Services
 
         public async Task<AnimalDto> Get(Guid id)
         {
-            var animal = await animalDataService.GetAsync(new AnimalIdSpecification(id));
+            var animal = await animalDataService.GetAsync(new AnimalSpecification{Id = id});
             var animalDto = animalDtoBuilder.Build(animal);
             return animalDto;
+        }
+
+        public async Task<IEnumerable<AnimalDto>> Get(AnimalSpecDto animalSpecDto)
+        {
+            var animalSpec = animalSpecificationBuilder.Build(animalSpecDto);
+            var animals = await animalDataService.GetAllAsync(animalSpec);
+            var animalsDto = animals.Select(animalDtoBuilder.Build).ToArray();
+            return animalsDto;
         }
 
         public async Task<Guid> Create(AnimalSaveDto animalSaveDto)
@@ -82,7 +93,7 @@ namespace PET.Application.Services
 
         public async Task Delete(Guid id)
         {
-            var animal = await animalDataService.GetAsync(new AnimalIdSpecification(id));
+            var animal = await animalDataService.GetAsync(new AnimalSpecification{Id = id});
             await animalDataService.RemoveAsync(animal);
         }
     }

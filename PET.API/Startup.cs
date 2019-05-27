@@ -66,6 +66,7 @@ namespace PET.API
                 .AddScoped<IFileBuilder, FileBuilder>()
                 .AddScoped<IUserDtoBuilder, UserDtoBuilder>()
                 .AddScoped<IUserBuilder, UserBuilder>()
+                .AddScoped<IAnimalSpecificationBuilder, AnimalSpecificationBuilder>()
                 .AddScoped<FileAppService>()
                 .AddScoped<AnimalAppService>()
                 .AddScoped<UserAppService>();
