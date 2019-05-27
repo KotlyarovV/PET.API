@@ -42,8 +42,8 @@ namespace PET.API.Services.Authorization
 
             var animal = await animalAppService.Get(animalId);
 
-            // todo: здесь не animal.Name, а animal.Owner что-то такое :)
-            if (animal == null || animal.Name != userEmail)
+            // todo: проверка того, что животное было создано конкретным пользователем
+            if (animal == null) //|| animal.Name != userEmail)
             {
                 context.Fail();
 
