@@ -5,9 +5,9 @@ namespace PET.Application.Builders
 {
     public class UserDtoBuilder : IUserDtoBuilder
     {
-        public UserSaveDto Build(User user)
+        public UserRegisterDto Build(User user)
         {
-            return new UserSaveDto
+            return new UserRegisterDto
             {
                 Email = user.Email,
                 Password = user.Password

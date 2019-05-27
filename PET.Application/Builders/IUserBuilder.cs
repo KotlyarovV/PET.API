@@ -5,6 +5,6 @@ namespace PET.Application.Builders
 {
     public interface IUserBuilder
     {
-        User Build(UserSaveDto userSaveDto);
+        User Build(UserRegisterDto userRegisterDto);
     }
 }

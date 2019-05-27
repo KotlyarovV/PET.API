@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +11,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using PET.Application.Builders;
 using PET.Application.Services;
+using PET.API.Services.Authorization;
 using PET.Domain.Models;
 using PET.Ef.DbContexts;
 using PET.Infrastructure;
@@ -68,13 +70,17 @@ namespace PET.API
                 .AddScoped<IUserBuilder, UserBuilder>()
                 .AddScoped<FileAppService>()
                 .AddScoped<AnimalAppService>()
-                .AddScoped<UserAppService>();
+                .AddScoped<UserAppService>()
+                .AddTransient<IAuthorizationHandler, MustOwnAnimalHandler>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = new PathString("/account");
-                });
+                .AddCookie(options => { options.LoginPath = new PathString("/account"); });
+
+            services.AddAuthorization(opts =>
+            {
+                opts.AddPolicy(nameof(MustOwnAnimalRequirement),
+                    policy => policy.Requirements.Add(new MustOwnAnimalRequirement()));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,7 +98,8 @@ namespace PET.API
                     .AllowAnyHeader())
                 .UseSwagger()
                 .UseAuthentication()
-                .UseSwaggerUI(swaggerUiOptions => swaggerUiOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Payment registration API"))
+                .UseSwaggerUI(swaggerUiOptions =>
+                    swaggerUiOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Payment registration API"))
                 .UseMvc(routes =>
                 {
                     routes.MapRoute(

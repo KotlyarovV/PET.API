@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PET.Application.DTOs;
 using PET.Application.Services;
+using PET.API.Services.Authorization;
 
 namespace PET.API.Controllers
 {
@@ -42,7 +43,7 @@ namespace PET.API.Controllers
 
         [HttpPost]
         [Route("{id}")]
-        [Authorize]
+        [Authorize(Policy = nameof(MustOwnAnimalRequirement))]
         public async Task Update(Guid id, [FromBody] AnimalUpdateDto animalUpdateDto)
         {
             await animalAppService.Update(id, animalUpdateDto);
@@ -50,7 +51,7 @@ namespace PET.API.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        [Authorize]
+        [Authorize(Policy = nameof(MustOwnAnimalRequirement))]
         public async Task Delete(Guid id)
         {
             await animalAppService.Delete(id);

@@ -45,6 +45,12 @@ namespace PET.Application.Services
         public async Task<AnimalDto> Get(Guid id)
         {
             var animal = await animalDataService.GetAsync(new AnimalIdSpecification(id));
+
+            if (animal == null)
+            {
+                return null;
+            }
+
             var animalDto = animalDtoBuilder.Build(animal);
             return animalDto;
         }
