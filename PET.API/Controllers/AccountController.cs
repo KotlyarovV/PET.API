@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PET.Application.Builders;
 using PET.Application.DTOs;
 using PET.Application.Services;
 
@@ -14,7 +15,7 @@ namespace PET.API.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private UserAppService userAppService;
+        private readonly UserAppService userAppService;
 
         public AccountController(UserAppService userAppService)
         {
@@ -26,27 +27,21 @@ namespace PET.API.Controllers
         public async Task<IActionResult> Login()
         {
             HttpContext.Response.StatusCode = 403;
-            return new JsonResult(new { Error = "Ошибка авторизации." });
+
+            return new JsonResult(new {Error = "Ошибка авторизации."});
         }
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] UserSaveDto userDto)
+        public async Task<IActionResult> Login([FromBody] UserLoginDto userDto)
         {
-            try
+            var user = await userAppService.Get(userDto.Email);
+
+            if (user != null && user.Password == userDto.Password)
             {
-                var user = await userAppService.Get(userDto.Email);
+                await Authenticate(userDto.Email);
 
-                if (user != null && user.Password == userDto.Password)
-                {
-                    await Authenticate(userDto.Email);
-
-                    return new OkResult();
-                }
-            }
-            catch
-            {
-
+                return new OkResult();
             }
 
             return Redirect("/account");
@@ -71,6 +66,22 @@ namespace PET.API.Controllers
             var id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType,
                 ClaimsIdentity.DefaultRoleClaimType);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+        }
+
+        [HttpPost]
+        [Route("register")]
+        public async Task<IActionResult> Register([FromBody] UserRegisterDto userRegisterDto)
+        {
+            var user = await userAppService.Get(userRegisterDto.Email);
+
+            if (user != null)
+            {
+                return UnprocessableEntity(new {Error = "Пользователь с таким email уже существует."});
+            }
+
+            await userAppService.Create(userRegisterDto);
+
+            return new OkResult();
         }
     }
 }

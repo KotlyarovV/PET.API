@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using PET.Domain.Models;
 
 namespace PET.Application.DTOs
 {
@@ -27,5 +28,7 @@ namespace PET.Application.DTOs
         public SexM Sex { get; set; }
 
         public IEnumerable<string> WayToFiles { get; set; }
+
+        public Guid OwnerId { get; set; }
     }
 }

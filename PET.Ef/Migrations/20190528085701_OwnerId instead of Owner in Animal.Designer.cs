@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PET.Ef.DbContexts;
 
 namespace PET.Ef.Migrations
 {
     [DbContext(typeof(AnimalDbContext))]
-    partial class AnimalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190528085701_OwnerId instead of Owner in Animal")]
+    partial class OwnerIdinsteadofOwnerinAnimal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,13 +36,15 @@ namespace PET.Ef.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<Guid>("OwnerId");
+
                     b.Property<bool>("Passport");
 
                     b.Property<int>("Sex");
 
                     b.Property<bool>("Sterilization");
 
-                    b.Property<Guid>("UserId");
+                    b.Property<Guid?>("UserId");
 
                     b.Property<bool>("Vaccination");
 

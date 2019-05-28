@@ -10,13 +10,14 @@ namespace PET.Infrastructure
 {
     public class UserDataService : Repository<User>, IDataService<User>
     {
-        public UserDataService(UserDbContext context) : base(context)
+        public UserDataService(AnimalDbContext context) : base(context)
         {
         }
 
         protected override IQueryable<User> ConfigureQuery()
         {
-            return dbSet;
+            return dbSet
+                .Include(u => u.Animals);
         }
 
         public async Task<IEnumerable<User>> GetAllAsync()

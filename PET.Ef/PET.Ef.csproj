@@ -5,6 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190528073307_Moved Users to AnimalDbContext.cs" />
+    <Compile Remove="Migrations\20190528073307_Moved Users to AnimalDbContext.Designer.cs" />
+    <Compile Remove="Migrations\20190528073430_Moved Users to AnimalDbContext.cs" />
+    <Compile Remove="Migrations\20190528073430_Moved Users to AnimalDbContext.Designer.cs" />
+    <Compile Remove="Migrations\20190528074215_Moved Users to AnimalDbContext.cs" />
+    <Compile Remove="Migrations\20190528074215_Moved Users to AnimalDbContext.Designer.cs" />
+    <Compile Remove="Migrations\20190528083310_Fix in User model.cs" />
+    <Compile Remove="Migrations\20190528083310_Fix in User model.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.8" />

@@ -21,7 +21,7 @@ namespace PET.Infrastructure
 
         public Task<TEntity> GetAsync(ISpecification<TEntity> spec)
         {
-            return ConfigureQuery().Where(spec.IsSatisfiedBy).SingleAsync();
+            return ConfigureQuery().Where(spec.IsSatisfiedBy).SingleOrDefaultAsync();
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync(ISpecification<TEntity> spec)

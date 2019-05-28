@@ -22,17 +22,23 @@ namespace PET.Application.Services
             this.userBuilder = userBuilder;
         }
 
-        public async Task<UserSaveDto> Get(string email)
+        public async Task<UserDto> Get(string email)
         {
             var spec = new UserEmailSpecification(email);
             var user = await userDataService.GetAsync(spec);
+
+            if (user == null)
+            {
+                return null;
+            }
+
             var userDto = userDtoBuilder.Build(user);
             return userDto;
         }
 
-        public async Task<Guid> Create(UserSaveDto userSaveDto)
+        public async Task<Guid> Create(UserRegisterDto userRegisterDto)
         {
-            var user = userBuilder.Build(userSaveDto); 
+            var user = userBuilder.Build(userRegisterDto); 
             await userDataService.AddAsync(user);
 
             return user.Id;
