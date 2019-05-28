@@ -41,9 +41,6 @@ namespace PET.API
                 .AddDbContext<AnimalDbContext>(
                     options => options
                         .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")))
-                .AddDbContext<UserDbContext>(
-                    options => options
-                        .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")))
                 .AddMvc()
                 .AddJsonOptions(options =>
                 {

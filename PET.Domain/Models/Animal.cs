@@ -26,5 +26,7 @@ namespace PET.Domain.Models
         public Sex Sex { get; set; }
 
         public ICollection<File> Files { get; set; }
+
+        public Guid UserId { get; set; }
     }
 }

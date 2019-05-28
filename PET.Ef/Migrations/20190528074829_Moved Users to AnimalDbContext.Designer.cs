@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PET.Ef.DbContexts;
 
 namespace PET.Ef.Migrations
 {
     [DbContext(typeof(AnimalDbContext))]
-    partial class AnimalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190528074829_Moved Users to AnimalDbContext")]
+    partial class MovedUserstoAnimalDbContext
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,8 +23,7 @@ namespace PET.Ef.Migrations
 
             modelBuilder.Entity("PET.Domain.Models.Animal", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<Guid>("Id");
 
                     b.Property<string>("AnimalType");
 
@@ -40,13 +41,9 @@ namespace PET.Ef.Migrations
 
                     b.Property<bool>("Sterilization");
 
-                    b.Property<Guid>("UserId");
-
                     b.Property<bool>("Vaccination");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Animals");
                 });
@@ -85,9 +82,9 @@ namespace PET.Ef.Migrations
 
             modelBuilder.Entity("PET.Domain.Models.Animal", b =>
                 {
-                    b.HasOne("PET.Domain.Models.User")
+                    b.HasOne("PET.Domain.Models.User", "Owner")
                         .WithMany("Animals")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

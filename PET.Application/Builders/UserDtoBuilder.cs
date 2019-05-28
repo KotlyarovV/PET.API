@@ -5,12 +5,14 @@ namespace PET.Application.Builders
 {
     public class UserDtoBuilder : IUserDtoBuilder
     {
-        public UserRegisterDto Build(User user)
+        public UserDto Build(User user)
         {
-            return new UserRegisterDto
+            return new UserDto
             {
+                Id = user.Id,
                 Email = user.Email,
-                Password = user.Password
+                Password = user.Password,
+                Animals = user.Animals   
             };
         }
     }

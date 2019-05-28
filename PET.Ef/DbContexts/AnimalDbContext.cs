@@ -13,6 +13,7 @@ namespace PET.Ef.DbContexts
         }
 
         public DbSet<Animal> Animals { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -20,7 +21,8 @@ namespace PET.Ef.DbContexts
 
             modelBuilder
                 .ApplyConfiguration(new AnimalEntityTypeConfiguration())
-                .ApplyConfiguration(new FileEntityTypeConfiguration());
+                .ApplyConfiguration(new FileEntityTypeConfiguration())
+                .ApplyConfiguration(new UserEntityTypeConfiguration());
         }
     }
 }

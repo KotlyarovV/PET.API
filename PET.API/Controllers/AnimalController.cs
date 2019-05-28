@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PET.Application.Builders;
 using PET.Application.DTOs;
 using PET.Application.Services;
 using PET.API.Services.Authorization;
@@ -13,10 +15,13 @@ namespace PET.API.Controllers
     public class AnimalController : Controller
     {
         private readonly AnimalAppService animalAppService;
+        private readonly UserAppService userAppService;
 
-        public AnimalController(AnimalAppService animalAppService)
+
+        public AnimalController(AnimalAppService animalAppService, UserAppService userAppService)
         {
             this.animalAppService = animalAppService;
+            this.userAppService = userAppService;
         }
 
         [HttpGet]
@@ -45,7 +50,10 @@ namespace PET.API.Controllers
         [Authorize]
         public async Task<Guid> Create([FromBody] AnimalSaveDto animalSaveDto)
         {
-            return await animalAppService.Create(animalSaveDto);
+            var userEmail = User.FindFirstValue(ClaimTypes.Name);
+            var user = await userAppService.Get(userEmail);
+
+            return await animalAppService.Create(animalSaveDto, user);
         }
 
         [HttpPost]
@@ -53,7 +61,10 @@ namespace PET.API.Controllers
         [Authorize(Policy = nameof(MustOwnAnimalRequirement))]
         public async Task Update(Guid id, [FromBody] AnimalUpdateDto animalUpdateDto)
         {
-            await animalAppService.Update(id, animalUpdateDto);
+            var userEmail = User.FindFirstValue(ClaimTypes.Name);
+            var user = await userAppService.Get(userEmail);
+
+            await animalAppService.Update(id, animalUpdateDto, user);
         }
 
         [HttpDelete]

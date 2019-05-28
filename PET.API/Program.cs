@@ -9,7 +9,7 @@ namespace PET.API
         {
             var host = CreateWebHostBuilder(args)
                 .Build();
-     //       host.PrepareDB();
+            //host.PrepareDB();
             host.Run();
         }
 

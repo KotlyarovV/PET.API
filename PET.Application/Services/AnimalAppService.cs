@@ -18,13 +18,14 @@ namespace PET.Application.Services
         private readonly IFileStorageService fileStorageService;
         private readonly IFileBuilder fileBuilder;
         private readonly IAnimalSpecificationBuilder animalSpecificationBuilder;
+        private readonly IUserBuilder userBuilder;
 
         public AnimalAppService(IDataService<Animal> animalDataService,
             IAnimalDtoBuilder animalDtoBuilder,
             IAnimalBuilder animalBuilder,
             IFileStorageService fileStorageService,
             IFileBuilder fileBuilder,
-            IAnimalSpecificationBuilder animalSpecificationBuilder)
+            IAnimalSpecificationBuilder animalSpecificationBuilder, IUserBuilder userBuilder)
         {
             this.animalDataService = animalDataService;
             this.animalDtoBuilder = animalDtoBuilder;
@@ -32,6 +33,7 @@ namespace PET.Application.Services
             this.fileStorageService = fileStorageService;
             this.fileBuilder = fileBuilder;
             this.animalSpecificationBuilder = animalSpecificationBuilder;
+            this.userBuilder = userBuilder;
         }
 
         public async Task<IEnumerable<AnimalDto>> GetAll()
@@ -68,7 +70,7 @@ namespace PET.Application.Services
             return animalsDto;
         }
 
-        public async Task<Guid> Create(AnimalSaveDto animalSaveDto)
+        public async Task<Guid> Create(AnimalSaveDto animalSaveDto, UserDto userDto)
         {
             var files = animalSaveDto.Files
                 .Select(f => new {FileDTO = f, File = fileBuilder.Build(f)})
@@ -79,13 +81,14 @@ namespace PET.Application.Services
                 f.File.WayToFile)));
 
             var animal = animalBuilder.Build(animalSaveDto, files.Select(f => f.File)
-                .ToArray());
+                .ToArray(), userBuilder.Build(userDto));
+
             await animalDataService.AddAsync(animal);
 
             return animal.Id;
         }
 
-        public async Task Update(Guid id, AnimalUpdateDto animalUpdateDto)
+        public async Task Update(Guid id, AnimalUpdateDto animalUpdateDto, UserDto userDto)
         {
             var files = animalUpdateDto.Files
                 .Select(f => new {FileDTO = f, File = fileBuilder.Build(f)})
@@ -96,7 +99,8 @@ namespace PET.Application.Services
                 f.File.WayToFile)));
 
             var animal = animalBuilder.Build(id, animalUpdateDto, files.Select(f => f.File)
-                .ToArray());
+                .ToArray(), userBuilder.Build(userDto));
+
             await animalDataService.Update(animal);
         }
 

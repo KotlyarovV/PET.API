@@ -15,7 +15,7 @@ namespace PET.API.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private UserAppService userAppService;
+        private readonly UserAppService userAppService;
 
         public AccountController(UserAppService userAppService)
         {

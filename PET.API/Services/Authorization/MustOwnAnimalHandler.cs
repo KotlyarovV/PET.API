@@ -10,10 +10,12 @@ namespace PET.API.Services.Authorization
     public class MustOwnAnimalHandler : AuthorizationHandler<MustOwnAnimalRequirement>
     {
         private readonly AnimalAppService animalAppService;
+        private readonly UserAppService userAppService;
 
-        public MustOwnAnimalHandler(AnimalAppService animalAppService)
+        public MustOwnAnimalHandler(AnimalAppService animalAppService, UserAppService userAppService)
         {
             this.animalAppService = animalAppService;
+            this.userAppService = userAppService;
         }
 
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
@@ -41,9 +43,10 @@ namespace PET.API.Services.Authorization
             var userEmail = context.User.FindFirstValue(ClaimTypes.Name);
 
             var animal = await animalAppService.Get(animalId);
+            var user = await userAppService.Get(userEmail);
 
-            // todo: проверка того, что животное было создано конкретным пользователем
-            if (animal == null) //|| animal.Name != userEmail)
+            //todo: сделать роли и проверять админскую роль
+            if (animal == null || animal.OwnerId != user.Id || user.Name != "admin")
             {
                 context.Fail();
 

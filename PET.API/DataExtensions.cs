@@ -13,15 +13,29 @@ namespace PET.API
 {
     public static class DataExtensions
     {
+        private static readonly User Admin = new User
+        {
+            Id = Guid.NewGuid(),
+            Email = "admin",
+            Password = "123"
+        };
+
+        private static readonly User User = new User
+        {
+            Id = Guid.NewGuid(),
+            Email = "user",
+            Password = "123"
+        };
+
         public static void PrepareDB(this IWebHost host)
         {
             using (var scope = host.Services.CreateScope())
             {
-                var petsDataService = scope.ServiceProvider.GetRequiredService<IDataService<Animal>>();
-                petsDataService.SeedWithSampleAnimals();
-
                 var usersDataService = scope.ServiceProvider.GetRequiredService<IDataService<User>>();
                 usersDataService.SeedWithSampleUsers();
+
+                var petsDataService = scope.ServiceProvider.GetRequiredService<IDataService<Animal>>();
+                petsDataService.SeedWithSampleAnimals();
             }
         }
 
@@ -45,7 +59,8 @@ namespace PET.API
                     Description = "Кошка картошка",
                     Id = Guid.NewGuid(),
                     Name = "Пуговка",
-                    Sex = Sex.Female
+                    Sex = Sex.Female,
+                    UserId = User.Id
                 },
 
                 new Animal
@@ -55,7 +70,8 @@ namespace PET.API
                     Description = "Кот обормот",
                     Id = Guid.NewGuid(),
                     Name = "Вася",
-                    Sex = Sex.Male
+                    Sex = Sex.Male,
+                    UserId = Admin.Id
                 },
 
                 new Animal
@@ -65,7 +81,8 @@ namespace PET.API
                     Description = "Спокойная кошка",
                     Id = Guid.NewGuid(),
                     Name = "Маруся",
-                    Sex = Sex.Female
+                    Sex = Sex.Female,
+                    UserId = Admin.Id
                 }
             };
 
@@ -87,14 +104,10 @@ namespace PET.API
                     .Wait();
             }
 
-            var admin = new User
-            {
-                Id = Guid.NewGuid(),
-                Email = "admin",
-                Password = "123"
-            };
+            dataService.AddAsync(Admin)
+                .Wait();
 
-            dataService.AddAsync(admin)
+            dataService.AddAsync(User)
                 .Wait();
         }
     }

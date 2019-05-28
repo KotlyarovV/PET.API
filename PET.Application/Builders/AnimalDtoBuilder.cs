@@ -20,7 +20,8 @@ namespace PET.Application.Builders
                 Kind = animal.Kind,
                 Name = animal.Name,
                 Sex = (SexM) animal.Sex,
-                WayToFiles = animal.Files.Select(f => f.WayToFile).ToArray()
+                WayToFiles = animal.Files.Select(f => f.WayToFile).ToArray(),
+                OwnerId = animal.UserId
             };
         }
     }

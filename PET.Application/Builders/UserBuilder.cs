@@ -16,5 +16,17 @@ namespace PET.Application.Builders
                 Name = userRegisterDto.Name
             };
         }
+
+        public User Build(UserDto userDto)
+        {
+            return new User
+            {
+                Id = userDto.Id,
+                Email = userDto.Email,
+                Password = userDto.Password,
+                Name = userDto.Name,
+                Animals = userDto.Animals
+            };
+        }
     }
 }
