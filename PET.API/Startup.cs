@@ -72,7 +72,11 @@ namespace PET.API
                 .AddTransient<IAuthorizationHandler, MustOwnAnimalHandler>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options => { options.LoginPath = new PathString("/account"); });
+                .AddCookie(options =>
+                {
+                    options.LoginPath = new PathString("/account");
+                    options.Cookie.HttpOnly = false;
+                });
 
             services.AddAuthorization(opts =>
             {

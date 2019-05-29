@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Configuration;
 using PET.Application.Services;
 
 namespace PET.API.Services.Authorization
@@ -11,11 +12,14 @@ namespace PET.API.Services.Authorization
     {
         private readonly AnimalAppService animalAppService;
         private readonly UserAppService userAppService;
+        private readonly IConfiguration configuration;
 
-        public MustOwnAnimalHandler(AnimalAppService animalAppService, UserAppService userAppService)
+        public MustOwnAnimalHandler(AnimalAppService animalAppService, UserAppService userAppService,
+            IConfiguration configuration)
         {
             this.animalAppService = animalAppService;
             this.userAppService = userAppService;
+            this.configuration = configuration;
         }
 
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
@@ -44,9 +48,9 @@ namespace PET.API.Services.Authorization
 
             var animal = await animalAppService.Get(animalId);
             var user = await userAppService.Get(userEmail);
+            var adminEmail = configuration.GetValue<string>("AdminEmail");
 
-            //todo: сделать роли и проверять админскую роль
-            if (animal == null || animal.OwnerId != user.Id || user.Name != "admin")
+            if (animal == null || user == null || animal.OwnerId != user.Id || user.Email != adminEmail)
             {
                 context.Fail();
 
