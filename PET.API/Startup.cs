@@ -93,7 +93,8 @@ namespace PET.API
                 .UseCors(b => b
                     .AllowAnyOrigin()
                     .AllowAnyMethod()
-                    .AllowAnyHeader())
+                    .AllowAnyHeader()
+                    .AllowCredentials())
                 .UseSwagger()
                 .UseAuthentication()
                 .UseSwaggerUI(swaggerUiOptions =>

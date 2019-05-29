@@ -16,7 +16,7 @@ namespace PET.API
         private static readonly User Admin = new User
         {
             Id = Guid.NewGuid(),
-            Email = "admin",
+            Email = "admin@admin.ru",
             Password = "123"
         };
 
