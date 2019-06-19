@@ -40,7 +40,6 @@ namespace PET.API.Controllers
             if (user != null && user.Password == userDto.Password)
             {
                 await Authenticate(userDto.Email);
-                Response.Cookies.Append("authed", "yes");
 
                 return new OkResult();
             }
@@ -54,7 +53,7 @@ namespace PET.API.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            Response.Cookies.Delete("authed");
+
             return new OkResult();
         }
 

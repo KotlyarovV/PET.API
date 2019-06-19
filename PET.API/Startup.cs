@@ -75,7 +75,6 @@ namespace PET.API
                 .AddCookie(options =>
                 {
                     options.LoginPath = new PathString("/account");
-                    options.Cookie.HttpOnly = false;
                 });
 
             services.AddAuthorization(opts =>
@@ -97,8 +96,7 @@ namespace PET.API
                 .UseCors(b => b
                     .AllowAnyOrigin()
                     .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials())
+                    .AllowAnyHeader())
                 .UseSwagger()
                 .UseAuthentication()
                 .UseSwaggerUI(swaggerUiOptions =>
